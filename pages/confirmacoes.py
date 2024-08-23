@@ -1,5 +1,6 @@
 import streamlit as st
 import mysql.connector
+import pandas as pd
 
 # Função para conectar ao banco de dados MySQL
 def connect_to_db():
@@ -11,18 +12,20 @@ def connect_to_db():
         port=13398
     )
 
+# Função para extrair dados do MySQL para um DataFrame
+def export_confirmations_to_dataframe():
+    db = connect_to_db()
+    query = "SELECT Nome, Data, Pagante FROM confirmacoes ORDER BY Data, Nome"
+    df = pd.read_sql(query, db)
+    db.close()
+    return df
+
 # Tela de listagem das confirmações
 
 st.title("Lista de Confirmações")
 
-db = connect_to_db()
-cursor = db.cursor()
-query = "SELECT Nome, Data FROM confirmacoes ORDER BY Data, Nome"
-cursor.execute(query)
-results = cursor.fetchall()
-cursor.close()
-db.close()
+# Exportar os dados para um DataFrame
+confirmations_df = export_confirmations_to_dataframe()
 
-st.write("Confirmações:")
-for row in results:
-    st.write(f"{row[1]} - {row[0]}")
+# Exibir o DataFrame
+st.write(confirmations_df)

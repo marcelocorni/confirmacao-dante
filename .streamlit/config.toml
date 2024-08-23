@@ -7,7 +7,7 @@ textColor = "#FFFFFF"
 primaryColor = "#E0C166"
 backgroundColor = "black"
 secondaryBackgroundColor = "#E0C166"
-font = "sans-serif"
+font = "sans serif"
 
 [client]
 
