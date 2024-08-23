@@ -4,14 +4,21 @@ import pandas as pd
 
 # Função para conectar ao banco de dados MySQL
 def connect_to_db():
-    return mysql.connector.connect(
-        host="mysql-3cdcc8f3-marcelo-eb41.b.aivencloud.com",   # Substitua pelo seu host MySQL
-        user=st.secrets["db_username"],   # Substitua pelo seu usuário MySQL
-        password=st.secrets["db_password"],   # Substitua pela sua senha MySQL
-        database="dante",  # Substitua pelo nome do seu banco de dados
-        ssl_disabled=True,
-        port=13398       
-    )
+    mysql_config = {
+        'user': st.secrets["db_username"],
+        'password': st.secrets["db_password"],
+        'host': 'mysql-3cdcc8f3-marcelo-eb41.b.aivencloud.com',
+        'database': 'dante',
+        'port': '13398'
+    }
+    return mysql.connector.connect(**mysql_config )
+    # return mysql.connector.connect(
+    #     host="mysql-3cdcc8f3-marcelo-eb41.b.aivencloud.com",   # Substitua pelo seu host MySQL
+    #     user=st.secrets["db_username"],   # Substitua pelo seu usuário MySQL
+    #     password=st.secrets["db_password"],   # Substitua pela sua senha MySQL
+    #     database="dante",  # Substitua pelo nome do seu banco de dados
+    #     port=13398
+    # )
 
 # Função para extrair dados do MySQL para um DataFrame
 def export_confirmations_to_dataframe():
