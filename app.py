@@ -40,9 +40,10 @@ def save_to_mysql(nomes_lista):
     cursor.close()
     db.close()
 
-# Função para remover um nome da lista
-def remover_nome(nome):
-    st.session_state['nomes_lista'].remove(nome)
+# Função para remover um nome da lista pelo índice
+def remover_nome(index):
+    if 'nomes_lista' in st.session_state:
+        del st.session_state['nomes_lista'][index]
 
 # Função para adicionar nome e limpar o campo
 def adicionar_nome():
@@ -93,12 +94,14 @@ def confirmacao_presenca():
 
         # Botão para confirmar a lista
         if st.button("Confirmar Lista"):
-            if not any(item['nome'] == 'admin.corni' for item in st.session_state['nomes_lista']):
-                save_to_mysql(st.session_state['nomes_lista'])
-                st.session_state['page'] = 'agradecimento'
-                st.switch_page('pages/agradecimento.py')
-            if any(item['nome'] == 'admin.corni' for item in st.session_state['nomes_lista']):
-                st.switch_page('pages/confirmacoes.py')
+                # Verificação se a lista não está vazia
+            if len(st.session_state['nomes_lista']) > 0:
+                if not any(item['nome'] == 'admin.corni' for item in st.session_state['nomes_lista']):
+                    save_to_mysql(st.session_state['nomes_lista'])
+                    st.session_state['page'] = 'agradecimento'
+                    st.switch_page('pages/agradecimento.py')
+                if any(item['nome'] == 'admin.corni' for item in st.session_state['nomes_lista']):
+                    st.switch_page('pages/confirmacoes.py')
             else:
                 st.warning("Adicione ao menos um nome à lista.")
 
