@@ -12,9 +12,9 @@ def connect_to_db():
     mysql_config = {
         'user': st.secrets["db_username"],
         'password': st.secrets["db_password"],
-        'host': 'mysql-3cdcc8f3-marcelo-eb41.b.aivencloud.com',
-        'database': 'dante',
-        'port': '13398'
+        'host': 'mysql.desenvolvedor.net',
+        'database': 'desenvolvedordb',
+        'port': '3306'
     }
     return mysql.connector.connect(**mysql_config )
     # return mysql.connector.connect(
