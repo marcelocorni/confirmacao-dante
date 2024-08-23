@@ -27,11 +27,15 @@ def connect_to_db():
 
 
 # Função para salvar os dados no MySQL
-def save_to_mysql(data):
+def save_to_mysql(nomes_lista):
     db = connect_to_db()
     cursor = db.cursor()
-    query = "INSERT INTO confirmacoes (Nome) VALUES (%s)"
-    cursor.executemany(query, [(nome,) for nome in data])
+    insert_query = "INSERT INTO confirmacoes (Nome, Idade, Pagante) VALUES (%s, %s, %s)"
+    data_to_insert = [
+        (item['nome'], item['idade'], 1 if item['idade'] >= 5 else 0)
+        for item in nomes_lista
+    ]
+    cursor.executemany(insert_query, data_to_insert)
     db.commit()
     cursor.close()
     db.close()
@@ -61,24 +65,39 @@ def confirmacao_presenca():
         if 'nomes_lista' not in st.session_state:
             st.session_state['nomes_lista'] = []
         
-        # Input para adicionar nome
-        st.text_input("Digite o nome e pressione ENTER para adicionar na lista:", key="input_nome", on_change=adicionar_nome)
+        # Inputs para Nome e Idade
+        nome = st.text_input("Nome", key="nome_input")
+        idade = st.number_input("Idade", min_value=0, max_value=120, step=1, key="idade_input")
 
-        # Exibe a lista de nomes e botões de remoção
-        st.write("Nomes na Lista (Caso esteja correta a sua lista de nomes clique em `Confirmar Lista`:")
-        for i, nome in enumerate(st.session_state['nomes_lista']):
-            col = st.columns([3, 1])
-            col[0].write(nome)
-            if col[1].button("Remover", key=f"remove_{i}"):
-                remover_nome(nome)
+        if st.button("Adicionar à Lista"):
+            if not nome.strip():
+                st.warning("O campo Nome é obrigatório.")
+            elif idade == 0:
+                st.warning("Por favor, insira uma idade válida.")
+            else:
+                # Adiciona o nome e a idade à lista de sessão
+                if 'nomes_lista' not in st.session_state:
+                    st.session_state['nomes_lista'] = []
+                st.session_state['nomes_lista'].append({'nome': nome.strip(), 'idade': idade})
+    
+        # Exibe a lista de nomes adicionados
+        if 'nomes_lista' in st.session_state and st.session_state['nomes_lista']:
+            st.subheader("Lista de Confirmados:")
+            for i, item in enumerate(st.session_state['nomes_lista']):
+                col1, col2 = st.columns([3, 1])
+                with col1:
+                    st.write(f"{item['nome']} ({item['idade']} anos)")
+                with col2:
+                    if st.button("Remover", key=f"remove_{i}"):
+                        remover_nome(i)
 
         # Botão para confirmar a lista
         if st.button("Confirmar Lista"):
-            if 'admin.corni' not in st.session_state['nomes_lista']:
+            if not any(item['nome'] == 'admin.corni' for item in st.session_state['nomes_lista']):
                 save_to_mysql(st.session_state['nomes_lista'])
                 st.session_state['page'] = 'agradecimento'
                 st.switch_page('pages/agradecimento.py')
-            elif 'admin.corni' in st.session_state['nomes_lista']:
+            if any(item['nome'] == 'admin.corni' for item in st.session_state['nomes_lista']):
                 st.switch_page('pages/confirmacoes.py')
             else:
                 st.warning("Adicione ao menos um nome à lista.")

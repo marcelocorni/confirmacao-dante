@@ -23,7 +23,7 @@ def connect_to_db():
 # Função para extrair dados do MySQL para um DataFrame
 def export_confirmations_to_dataframe():
     db = connect_to_db()
-    query = "SELECT Nome, Data, Pagante FROM confirmacoes ORDER BY Data, Nome"
+    query = "SELECT Nome, Idade, Data, Pagante FROM confirmacoes ORDER BY Data, Nome"
     df = pd.read_sql(query, db)
     db.close()
     return df
