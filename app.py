@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 import mysql.connector
+import os
 
 # Configurações iniciais
 st.set_page_config(layout="wide", page_title="Confirmação de Presença")
@@ -11,8 +12,8 @@ current_date = datetime.datetime.now()
 def connect_to_db():
     return mysql.connector.connect(
         host="mysql-3cdcc8f3-marcelo-eb41.b.aivencloud.com",   # Substitua pelo seu host MySQL
-        user="avnadmin",   # Substitua pelo seu usuário MySQL
-        password="AVNS_f7wJl9lniRrPZYsailW",   # Substitua pela sua senha MySQL
+        user=st.secrets["db_username"],   # Substitua pelo seu usuário MySQL
+        password=st.secrets["db_password"],   # Substitua pela sua senha MySQL
         database="dante",  # Substitua pelo nome do seu banco de dados
         port=13398
     )
