@@ -1,5 +1,5 @@
 import streamlit as st
-import MySQLdb
+import mysql.connector as MySQLdb
 import pandas as pd
 
 # Função para conectar ao banco de dados MySQL

@@ -1,6 +1,6 @@
 import streamlit as st
 import datetime
-import MySQLdb
+import mysql.connector as MySQLdb
 
 # Configurações iniciais
 st.set_page_config(layout="wide", page_title="Confirmação de Presença")
