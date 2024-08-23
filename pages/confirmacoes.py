@@ -1,11 +1,10 @@
 import streamlit as st
-import mysql.connector
+import MySQLdb
 import pandas as pd
-import os
 
 # Função para conectar ao banco de dados MySQL
 def connect_to_db():
-    return mysql.connector.connect(
+    return MySQLdb.connect(
         host="mysql-3cdcc8f3-marcelo-eb41.b.aivencloud.com",   # Substitua pelo seu host MySQL
         user=st.secrets["db_username"],   # Substitua pelo seu usuário MySQL
         password=st.secrets["db_password"],   # Substitua pela sua senha MySQL
