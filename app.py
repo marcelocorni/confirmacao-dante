@@ -62,7 +62,7 @@ def confirmacao_presenca():
             st.session_state['nomes_lista'] = []
         
         # Input para adicionar nome
-        st.text_input("Digite o nome para e pressione ENTER para adicionar na lista:", key="input_nome", on_change=adicionar_nome)
+        st.text_input("Digite o nome e pressione ENTER para adicionar na lista:", key="input_nome", on_change=adicionar_nome)
 
         # Exibe a lista de nomes e botões de remoção
         st.write("Nomes na Lista (Caso esteja correta a sua lista de nomes clique em `Confirmar Lista`:")
