@@ -9,8 +9,10 @@ def connect_to_db():
         user=st.secrets["db_username"],   # Substitua pelo seu usuário MySQL
         password=st.secrets["db_password"],   # Substitua pela sua senha MySQL
         database="dante",  # Substitua pelo nome do seu banco de dados
+        ssl_verify_cert=True,
+        ssl_disabled=False,
         port=13398,
-        ssl_ca="../data/ca.pem"
+        ssl_ca="data/ca.pem"
     )
 
 # Função para extrair dados do MySQL para um DataFrame
