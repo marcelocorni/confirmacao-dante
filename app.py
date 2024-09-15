@@ -4,7 +4,7 @@ import mysql.connector
 
 # Configurações iniciais
 st.set_page_config(layout="wide", page_title="Confirmação de Presença")
-deadline = datetime.datetime(2024, 9, 15)
+deadline = datetime.datetime(2024, 9, 17)
 current_date = datetime.datetime.now()
 
 # Função para conectar ao banco de dados MySQL
